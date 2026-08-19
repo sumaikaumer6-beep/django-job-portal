@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Portal</title>
+    <style>
+        body {
+            font-family: Arial;
+            background:#f4f4f4;
+            padding: 20px;
+        }
+        .box{
+            background:white;
+            padding:20px;
+            border-radius:8px;
+            box-shadow:0 2px 5px #ccc;
+            max-width:800px;
+            margin:auto;
+        }
+        h1 {
+            color: #007bff;
+            text-align:center;
+        }
+        .btn{
+            background:28a745;
+            color:white;
+            padding:10px 15px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+        .btn:hover{
+            background:#218838;
+        }
+        .job{
+            border:1px solid #ddd;
+            padding:15px;
+            margin 10px 0;
+            border-radius:5px;
+        }
+        input,textarea,select{
+            width=100%;
+            padding:8px;
+            margin:5px 0 10px;
+            border:1px solid #ccc;
+            border-radius:4px;
+        }
+    </style>
+</head>
+<body>
+     <h1>All Jobs</h1>
+     {% if user.is_authenticated and user.userprofile.is_employer %}
+         <a href="{% url 'job_create' %} ">Post New Jobs</a>
+     {% endif %}
+     <hr>
+     {% for job in jobs %}
+         <h2><a href="{% url 'job_detail' job.pk %}">{{ job.title }}</a></h2>
+         <p><b>Company:</b>{{ job.company.company_name }}</p>
+         <p><b>Location:</b>{{ job.location }}</p>
+         <p><b>Salary:</b>{{ job.salary }}</p>
+         <hr>
+     {% empty %}
+         <p>No jobs available right now.</p>
+     {% endfor %}
+</body>
+</html>

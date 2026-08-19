@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ job.title }}</title>
+    <style>
+        body {
+            font-family: Arial;
+            background:#f4f4f4;
+            padding: 20px;
+        }
+        .box{
+            background:white;
+            padding:20px;
+            border-radius:8px;
+            box-shadow:0 2px 5px #ccc;
+            max-width:800px;
+            margin:auto;
+        }
+        h1 {
+            color: #007bff;
+            text-align:center;
+        }
+        .btn{
+            background:28a745;
+            color:white;
+            padding:10px 15px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+        .btn:hover{
+            background:#218838;
+        }
+        .job{
+            border:1px solid #ddd;
+            padding:15px;
+            margin 10px 0;
+            border-radius:5px;
+        }
+        input,textarea,select{
+            width=100%;
+            padding:8px;
+            margin:5px 0 10px;
+            border:1px solid #ccc;
+            border-radius:4px;
+        }
+    </style>
+</head>
+<body>
+     <h1>{{ job.title }}</h1>
+     <p><b>Company:</b>{{ job.company.company_name }}</p>
+     <p><b>Description:</b>{{ job.description }}</p>
+     <p><b>Location:</b>{{ job.location }}</p>
+     <p><b>Salary:</b>{{ job.salary }}</p>
+     {% if user.is_authenticated and not user.userprofile.is_employer and not has_applied %}
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="file" name="resume" required>
+            <button type="submit">Apply Now</button>
+        </form>
+     {% elif has_applied %}
+               <p>You have already applied for this job.</p>
+     { % elif user.is_authenticated and user.userprofile.is_employer %}
+               <p>Companies cannot apply for jobs.</p>
+     {% else %}
+        <p>Please <a href="{% url 'login' %}">login</a> to apply for this job.</p>
+     {% endif %}
+</body>
+</html>
